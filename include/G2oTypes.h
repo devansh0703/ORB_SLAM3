@@ -25,7 +25,7 @@
 #include "Thirdparty/g2o/g2o/core/base_multi_edge.h"
 #include "Thirdparty/g2o/g2o/core/base_unary_edge.h"
 
-#include<opencv2/core/core.hpp>
+#include<opencv2/opencv.hpp>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>

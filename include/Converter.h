@@ -20,7 +20,7 @@
 #ifndef CONVERTER_H
 #define CONVERTER_H
 
-#include<opencv2/core/core.hpp>
+#include<opencv2/opencv.hpp>
 
 #include<Eigen/Dense>
 #include"Thirdparty/g2o/g2o/types/types_six_dof_expmap.h"

@@ -440,7 +440,7 @@ void MapDrawer::DrawCurrentCamera(pangolin::OpenGlMatrix &Twc)
 
 void MapDrawer::SetCurrentCameraPose(const Sophus::SE3f &Tcw)
 {
-    unique_lock<mutex> lock(mMutexCamera);
+    std::unique_lock<std::mutex> lock(mMutexCamera);
     mCameraPose = Tcw.inverse();
 }
 
@@ -448,7 +448,7 @@ void MapDrawer::GetCurrentOpenGLCameraMatrix(pangolin::OpenGlMatrix &M, pangolin
 {
     Eigen::Matrix4f Twc;
     {
-        unique_lock<mutex> lock(mMutexCamera);
+        std::unique_lock<std::mutex> lock(mMutexCamera);
         Twc = mCameraPose.matrix();
     }
 

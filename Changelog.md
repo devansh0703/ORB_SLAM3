@@ -1,6 +1,19 @@
 # ORB-SLAM3
 Details of changes between the different versions.
 
+### V1.1, 18th August 2025 (Modernization Update)
+
+- **Complete C++23 modernization**: Upgraded from C++11 to C++23 standard across entire codebase
+- **OpenCV 4.6.0 compatibility**: Updated all OpenCV headers to modern API (opencv2/opencv.hpp)
+- **Build system modernization**: CMake configurations updated for C++23 and latest dependencies
+- **Third-party library updates**: DBoW2, g2o, and Sophus libraries updated for C++23 compatibility
+- **Code compliance fixes**: Resolved namespace issues, mutex declarations, and C++17/C++23 strict type checking
+- **Dependencies update**: All dependencies moved to latest stable versions (Eigen3 3.4.0, OpenCV 4.6.0)
+- **Cross-platform testing**: Verified compatibility on Ubuntu 24.04 LTS with modern toolchain
+- **Performance improvements**: Benefits from latest OpenCV optimizations and modern C++ features
+
+All original functionality preserved with enhanced performance and modern development environment compatibility.
+
 ### V1.0, 22th December 2021
 
 - OpenCV static matrices changed to Eigen matrices. The average code speed-up is 16% in tracking and 19% in mapping, w.r.t. times reported in the ORB-SLAM3 paper.

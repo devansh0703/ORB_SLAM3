@@ -270,7 +270,7 @@ Sophus::SE3f System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, 
 
     // Check mode change
     {
-        unique_lock<mutex> lock(mMutexMode);
+        std::unique_lock<std::mutex> lock(mMutexMode);
         if(mbActivateLocalizationMode)
         {
             mpLocalMapper->RequestStop();
@@ -294,7 +294,7 @@ Sophus::SE3f System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, 
 
     // Check reset
     {
-        unique_lock<mutex> lock(mMutexReset);
+        std::unique_lock<std::mutex> lock(mMutexReset);
         if(mbReset)
         {
             mpTracker->Reset();
@@ -317,7 +317,7 @@ Sophus::SE3f System::TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, 
 
     // std::cout << "out grabber" << std::endl;
 
-    unique_lock<mutex> lock2(mMutexState);
+    std::unique_lock<std::mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
@@ -345,7 +345,7 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
     // Check mode change
     {
-        unique_lock<mutex> lock(mMutexMode);
+        std::unique_lock<std::mutex> lock(mMutexMode);
         if(mbActivateLocalizationMode)
         {
             mpLocalMapper->RequestStop();
@@ -369,7 +369,7 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
     // Check reset
     {
-        unique_lock<mutex> lock(mMutexReset);
+        std::unique_lock<std::mutex> lock(mMutexReset);
         if(mbReset)
         {
             mpTracker->Reset();
@@ -389,7 +389,7 @@ Sophus::SE3f System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const
 
     Sophus::SE3f Tcw = mpTracker->GrabImageRGBD(imToFeed,imDepthToFeed,timestamp,filename);
 
-    unique_lock<mutex> lock2(mMutexState);
+    std::unique_lock<std::mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
@@ -400,7 +400,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 {
 
     {
-        unique_lock<mutex> lock(mMutexReset);
+        std::unique_lock<std::mutex> lock(mMutexReset);
         if(mbShutDown)
             return Sophus::SE3f();
     }
@@ -420,7 +420,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 
     // Check mode change
     {
-        unique_lock<mutex> lock(mMutexMode);
+        std::unique_lock<std::mutex> lock(mMutexMode);
         if(mbActivateLocalizationMode)
         {
             mpLocalMapper->RequestStop();
@@ -444,7 +444,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 
     // Check reset
     {
-        unique_lock<mutex> lock(mMutexReset);
+        std::unique_lock<std::mutex> lock(mMutexReset);
         if(mbReset)
         {
             mpTracker->Reset();
@@ -465,7 +465,7 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 
     Sophus::SE3f Tcw = mpTracker->GrabImageMonocular(imToFeed,timestamp,filename);
 
-    unique_lock<mutex> lock2(mMutexState);
+    std::unique_lock<std::mutex> lock2(mMutexState);
     mTrackingState = mpTracker->mState;
     mTrackedMapPoints = mpTracker->mCurrentFrame.mvpMapPoints;
     mTrackedKeyPointsUn = mpTracker->mCurrentFrame.mvKeysUn;
@@ -477,13 +477,13 @@ Sophus::SE3f System::TrackMonocular(const cv::Mat &im, const double &timestamp, 
 
 void System::ActivateLocalizationMode()
 {
-    unique_lock<mutex> lock(mMutexMode);
+    std::unique_lock<std::mutex> lock(mMutexMode);
     mbActivateLocalizationMode = true;
 }
 
 void System::DeactivateLocalizationMode()
 {
-    unique_lock<mutex> lock(mMutexMode);
+    std::unique_lock<std::mutex> lock(mMutexMode);
     mbDeactivateLocalizationMode = true;
 }
 
@@ -502,20 +502,20 @@ bool System::MapChanged()
 
 void System::Reset()
 {
-    unique_lock<mutex> lock(mMutexReset);
+    std::unique_lock<std::mutex> lock(mMutexReset);
     mbReset = true;
 }
 
 void System::ResetActiveMap()
 {
-    unique_lock<mutex> lock(mMutexReset);
+    std::unique_lock<std::mutex> lock(mMutexReset);
     mbResetActiveMap = true;
 }
 
 void System::Shutdown()
 {
     {
-        unique_lock<mutex> lock(mMutexReset);
+        std::unique_lock<std::mutex> lock(mMutexReset);
         mbShutDown = true;
     }
 
@@ -562,7 +562,7 @@ void System::Shutdown()
 }
 
 bool System::isShutDown() {
-    unique_lock<mutex> lock(mMutexReset);
+    std::unique_lock<std::mutex> lock(mMutexReset);
     return mbShutDown;
 }
 
@@ -1320,19 +1320,19 @@ void System::SaveDebugData(const int &initIdx)
 
 int System::GetTrackingState()
 {
-    unique_lock<mutex> lock(mMutexState);
+    std::unique_lock<std::mutex> lock(mMutexState);
     return mTrackingState;
 }
 
 vector<MapPoint*> System::GetTrackedMapPoints()
 {
-    unique_lock<mutex> lock(mMutexState);
+    std::unique_lock<std::mutex> lock(mMutexState);
     return mTrackedMapPoints;
 }
 
 vector<cv::KeyPoint> System::GetTrackedKeyPointsUn()
 {
-    unique_lock<mutex> lock(mMutexState);
+    std::unique_lock<std::mutex> lock(mMutexState);
     return mTrackedKeyPointsUn;
 }
 

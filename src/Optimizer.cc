@@ -853,7 +853,7 @@ int Optimizer::PoseOptimization(Frame *pFrame)
     const float deltaStereo = sqrt(7.815);
 
     {
-    unique_lock<mutex> lock(MapPoint::mGlobalMutex);
+    std::unique_lock<std::mutex> lock(MapPoint::mGlobalMutex);
 
     for(int i=0; i<N; i++)
     {
@@ -1461,7 +1461,7 @@ void Optimizer::LocalBundleAdjustment(KeyFrame *pKF, bool* pbStopFlag, Map* pMap
 
 
     // Get Map Mutex
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
 
     if(!vToErase.empty())
     {
@@ -1730,7 +1730,7 @@ void Optimizer::OptimizeEssentialGraph(Map* pMap, KeyFrame* pLoopKF, KeyFrame* p
     optimizer.computeActiveErrors();
     optimizer.optimize(20);
     optimizer.computeActiveErrors();
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
 
     // SE3 Pose Recovering. Sim3:[sR t;0 1] -> SE3:[R t/s;0 1]
     for(size_t i=0;i<vpKFs.size();i++)
@@ -2054,7 +2054,7 @@ void Optimizer::OptimizeEssentialGraph(KeyFrame* pCurKF, vector<KeyFrame*> &vpFi
     optimizer.initializeOptimization();
     optimizer.optimize(20);
 
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
 
     // SE3 Pose Recovering. Sim3:[sR t;0 1] -> SE3:[R t/s;0 1]
     for(KeyFrame* pKFi : vpNonFixedKFs)
@@ -2884,7 +2884,7 @@ void Optimizer::LocalInertialBA(KeyFrame *pKF, bool *pbStopFlag, Map *pMap, int&
     }
 
     // Get Map Mutex and erase outliers
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
 
 
     // TODO: Some convergence problems have been detected here
@@ -3822,7 +3822,7 @@ void Optimizer::LocalBundleAdjustment(KeyFrame* pMainKF,vector<KeyFrame*> vpAdju
     Verbose::PrintMess("[BA]: Second optimization, there are " + to_string(badMonoMP) + " monocular and " + to_string(badStereoMP) + " sterero bad edges", Verbose::VERBOSITY_DEBUG);
 
     // Get Map Mutex
-    unique_lock<mutex> lock(pMainKF->GetMap()->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMainKF->GetMap()->mMutexMapUpdate);
 
     if(!vToErase.empty())
     {
@@ -4413,7 +4413,7 @@ void Optimizer::MergeInertialBA(KeyFrame* pCurrKF, KeyFrame* pMergeKF, bool *pbS
     }
 
     // Get Map Mutex and erase outliers
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
     if(!vToErase.empty())
     {
         for(size_t i=0;i<vToErase.size();i++)
@@ -4541,7 +4541,7 @@ int Optimizer::PoseInertialOptimizationLastKeyFrame(Frame *pFrame, bool bRecInit
     const float thHuberStereo = sqrt(7.815);
 
     {
-        unique_lock<mutex> lock(MapPoint::mGlobalMutex);
+        std::unique_lock<std::mutex> lock(MapPoint::mGlobalMutex);
 
         for(int i=0; i<N; i++)
         {
@@ -4925,7 +4925,7 @@ int Optimizer::PoseInertialOptimizationLastFrame(Frame *pFrame, bool bRecInit)
     const float thHuberStereo = sqrt(7.815);
 
     {
-        unique_lock<mutex> lock(MapPoint::mGlobalMutex);
+        std::unique_lock<std::mutex> lock(MapPoint::mGlobalMutex);
 
         for(int i=0; i<N; i++)
         {
@@ -5542,7 +5542,7 @@ void Optimizer::OptimizeEssentialGraph4DoF(Map* pMap, KeyFrame* pLoopKF, KeyFram
     optimizer.computeActiveErrors();
     optimizer.optimize(20);
 
-    unique_lock<mutex> lock(pMap->mMutexMapUpdate);
+    std::unique_lock<std::mutex> lock(pMap->mMutexMapUpdate);
 
     // SE3 Pose Recovering. Sim3:[sR t;0 1] -> SE3:[R t/s;0 1]
     for(size_t i=0;i<vpKFs.size();i++)

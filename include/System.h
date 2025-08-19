@@ -26,7 +26,7 @@
 #include<stdlib.h>
 #include<string>
 #include<thread>
-#include<opencv2/core/core.hpp>
+#include<opencv2/opencv.hpp>
 
 #include "Tracking.h"
 #include "FrameDrawer.h"
